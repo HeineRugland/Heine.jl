@@ -1,7 +1,7 @@
 using DataFrames
 export npt_running_average
 """
-    npt_running_average(x, y, n = 5, x_name = "x", y_name = "y")
+    npt_running_average(x, y; n = 5, x_name = "x", y_name = "y")
     
 Calculates an `n`-point running average for vectors `x` (vector of any type) and 
 `y` (numeric vector).
@@ -10,8 +10,8 @@ Returns a two-column `DataFrame` containing the running average values. `x_name`
 are the names for each column.
 """
 function npt_running_average(x::AbstractVector{X}, y::AbstractVector{T}; 
-        n::Int = 5; 
-        x_name::AbstractString = "x"; 
+        n::Int = 5, 
+        x_name::AbstractString = "x", 
         y_name::AbstractString = "y"
         ) where {X, T <: Real}
 
