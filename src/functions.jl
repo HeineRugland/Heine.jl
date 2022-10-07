@@ -1,4 +1,5 @@
 using DataFrames
+export npt_running_average
 """
     npt_running_average(x, y, n = 5, x_name = "x", y_name = "y")
     
