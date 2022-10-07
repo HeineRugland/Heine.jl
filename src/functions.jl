@@ -1,47 +1,38 @@
 using DataFrames
 """
-    npt_running_average(x_val, y_val, n = 5, x_name = "x", y_name = "y")
+    npt_running_average(x, y, n = 5, x_name = "x", y_name = "y")
     
-# Defines a running average function
-#####################################################################################################
-# Input:                                                                                            #
-# x_val: x-values in the data-set which will be averaged.                                           #
-# y_val: y-values in the data-set which will be averaged.                                           #
-# n: Default 5. Defines how long the running average will be.                                       #
-# x_name: Default "x". Defines the name of the x-value column in the output DataFrame.              #
-# y_name: Default "y". Defines the name of the y-value column in the output DataFrame.              #
-#                                                                                                   #
-# Output:                                                                                           #
-# df: DataFrame of the averaged y-values and respective x values with given or default column-names #
-#####################################################################################################
+Calculates an `n`-point running average for vectors `x` and `y`.
+
+Returns a two-column DataFrame containing the running average values. `x_name` and `y_name` 
+are the names for each column.
 """
-function npt_running_average(x_val, y_val, n = 5, x_name = "x", y_name = "y")
-    y_temp = []                               # Defines a temporary y-value array where the averaged values will be inserted
-    d = n ÷ 2                                 # Defines a variable "d" which is how many numbers in front or behind the current number which will be averaged
+function npt_running_average(x::AbstractVector{X}, y::AbstractVector{T}; 
+        n::Int = 5; 
+        x_name::AbstractString = "x"; 
+        y_name::AbstractString = "y"
+        ) where {X, T <: Real}
+
+    # `d` is the number of neighbours around the point being averaged.
+    d = n ÷ 2
     
-    x_fin = x_val[d+1:size(x_val)[1]-(d+1)]   # Defines the final selection of x-values which will be kept
-    
-    # Running the running average calculations:
-    for (i, x) in enumerate(y_val)
-        
-        # Excludes itterations where the current number has insufficient neighbours to run calculations
-        if (i ≤ d) | (i ≥ size(y_val)[1] - d)
+    # Defines vector containing final values
+    x_final = x[(d + 1):(length(x) - (d + 1))]
+    y_final = Float64[] 
+
+    for (i, x) in enumerate(y)
+        # Excludes iterations where the current number has insufficient neighbours.
+        if (i ≤ d) | (i ≥ lenght(y) - d)
             continue
-            
-        # Runs the calculation
-        else
-            npt = sum(y_val[i-d:i+d])/n
-            push!(y_temp, npt)                # Stores the average in "y_temp"
+        else 
+            npt = sum(y[(i - d):(i + d)]) / n
+            push!(y_final, npt)
         end
     end
     
-    # Inserts the x- and y-values into df, DataFrame
-    df = DataFrame(x = x_fin, y = y_temp)
-    
-    # Renames the columns
+    df = DataFrame(x = x_final, y = y_final)
     rename!(df,:x => x_name)
     rename!(df,:y => y_name)
     
-    # Returns the DataFrame
     return df
 end
