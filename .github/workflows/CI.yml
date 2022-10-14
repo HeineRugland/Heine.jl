@@ -54,7 +54,7 @@ jobs:
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
             using Pkg
-            Pkg.develop(PachageSpec(path=pwd()))
+            Pkg.develop(PackageSpec(path=pwd()))
             Pkg.instantiate()
             using Heine
             include("make.jl")
