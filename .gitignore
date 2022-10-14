@@ -3,4 +3,7 @@
 *.jl.mem
 /docs/build/
 Manifest.toml
+/docs/Manifest.toml
+/docs/.DS_Store
+.DS_Store
 .vscode/*

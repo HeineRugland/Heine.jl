@@ -16,6 +16,7 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
+        "Sliding window" => "sliding_window.md"
     ],
 )
 
