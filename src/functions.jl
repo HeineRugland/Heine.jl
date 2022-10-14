@@ -25,7 +25,7 @@ function npt_running_average(x::AbstractVector{X}, y::AbstractVector{T};
 
     for (i, x) in enumerate(y)
         # Excludes iterations where the current number has insufficient neighbours.
-        if (i ≤ d) | (i ≥ lenght(y) - d)
+        if (i ≤ d) | (i ≥ length(y) - d)
             continue
         else 
             npt = sum(y[(i - d):(i + d)]) / n
