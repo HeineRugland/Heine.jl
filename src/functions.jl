@@ -54,21 +54,15 @@ jumps with `step::Int`.
 Returns two vectors containing the calculated values.
 
 # Examples
-```@meta
-DocTestSetup = quote
-    using Heine
-    using Statistics
-end
-```
+
 ```jldoctest
+julia> using Heine, Statistics
 julia> sliding_window([1,2,3,4,5,6], [1,3,4,5,7,8], f = mean, width = 3, step = 3)
 ([2, 5], [2.6666666666666665, 6.666666666666667])
 julia> sliding_window([1,2,3,4,5,6], [1,3,4,5,7,8], f = median, width = 3, step = 3)
 ([2, 5], [3.0, 7.0])
 ```
-```@meta
-DocTestSetup = nothing
-```
+
 """
 function sliding_window(x::AbstractVector{X}, y::AbstractVector{Y};
         f::Function, 
