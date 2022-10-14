@@ -53,6 +53,10 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
+            using Pkg
+            Pkg.develop(PachageSpec(path=pwd()))
+            Pkg.instantiate()
             using Heine
+            include("make.jl")
             DocMeta.setdocmeta!(Heine, :DocTestSetup, :(using Heine); recursive=true)
             doctest(Heine)'
