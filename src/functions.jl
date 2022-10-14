@@ -19,7 +19,7 @@ julia> x = [1,2,3,4,5,6,7,8,9]
 julia> y = [1,2,3,4,5,6,7,8,9]
 julia> npt_running_average(x, y)
 ([3, 4, 5, 6, 7], [3.0, 4.0, 5.0, 6.0, 7.0])
-````
+```
 """
 function npt_running_average(x::AbstractVector{X}, y::AbstractVector{T}; 
         n::Int = 5,
