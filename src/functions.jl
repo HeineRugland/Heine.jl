@@ -1,5 +1,6 @@
 using DataFrames
 export npt_running_average
+export sliding_window
 """
     npt_running_average(x, y; n = 5, x_name = "x", y_name = "y")
     
@@ -37,4 +38,39 @@ function npt_running_average(x::AbstractVector{X}, y::AbstractVector{T};
     rename!(df,:y => y_name)
     
     return df
+end
+
+"""
+    sliding_window(x::AbstractVector{X}, y::AbstractVector{Y};
+        f::Function, 
+        width::Int, 
+        step::Int
+        ) where {X, Y <: Real}
+
+Calculates the function `f::Function` for input-vectors `x::AbstractVector` and 
+`y::AbstractVector` in a "sliding window" of constant `width::Int` and 
+jumps with `step::Int`.
+
+Returns two vectors containing the calculated values.
+
+# Examples
+
+```jldoctest
+julia> using Heine, Statistics
+julia> sliding_window([1,2,3,4,5,6], [1,3,4,5,7,8], f = mean, width = 3, step = 3)
+([2, 5], [2.6666666666666665, 6.666666666666667])
+julia> sliding_window([1,2,3,4,5,6], [1,3,4,5,7,8], f = median, width = 3, step = 3)
+([2, 5], [3.0, 7.0])
+```
+
+"""
+function sliding_window(x::AbstractVector{X}, y::AbstractVector{Y};
+        f::Function, 
+        width::Int, 
+        step::Int
+        ) where {X, Y <: Real}
+    
+    return [x[i + width ÷ 2] for i in 1:step:length(x) - width + 1], 
+        [f(window) for window in ((@view y[i:i + width - 1]) for
+        i in 1:step:length(y) - width + 1)]
 end
