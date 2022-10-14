@@ -57,6 +57,7 @@ jobs:
             Pkg.develop(PackageSpec(path=pwd()))
             Pkg.instantiate()
             using Heine
+            Pkg.activate("./docs/")
             include("make.jl")
             DocMeta.setdocmeta!(Heine, :DocTestSetup, :(using Heine); recursive=true)
             doctest(Heine)'
