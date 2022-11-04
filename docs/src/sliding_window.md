@@ -2,4 +2,5 @@
 
 ```@docs
 sliding_window
+npt_running_average
 ```

@@ -1,31 +1,40 @@
-using DataFrames
 export npt_running_average
 export sliding_window
 """
-    npt_running_average(x, y; n = 5, x_name = "x", y_name = "y")
+    npt_running_average(x::AbstractVector{X}, y::AbstractVector{T}; 
+        n::Int = 5,
+        ) where {X, T <: Real}
     
 Calculates an `n`-point running average for vectors `x` (vector of any type) and 
 `y` (numeric vector).
 
-Returns a two-column `DataFrame` containing the running average values. `x_name` and `y_name` 
-are the names for each column.
+Returns a tuple containing the running average values.
+
+```jldoctext
+julia> x = [1,2,3,4]
+julia> y = [5,6,7,8]
+julia>npt_running_average(x, y; n = 3)
+([2, 3], [7.0, 8.0])
+julia> x = [1,2,3,4,5,6,7,8,9]
+julia> y = [1,2,3,4,5,6,7,8,9]
+julia> npt_running_average(x, y)
+([3, 4, 5, 6, 7], [3.0, 4.0, 5.0, 6.0, 7.0])
+```
 """
 function npt_running_average(x::AbstractVector{X}, y::AbstractVector{T}; 
-        n::Int = 5, 
-        x_name::AbstractString = "x", 
-        y_name::AbstractString = "y"
+        n::Int = 5,
         ) where {X, T <: Real}
 
     # `d` is the number of neighbours around the point being averaged.
     d = n ÷ 2
     
     # Defines vector containing final values
-    x_final = x[(d + 1):(length(x) - (d + 1))]
+    x_final = x[(d + 1):(length(x) - (d))]
     y_final = Float64[] 
 
     for (i, x) in enumerate(y)
         # Excludes iterations where the current number has insufficient neighbours.
-        if (i ≤ d) | (i ≥ length(y) - d)
+        if (i ≤ d) | (i > length(y) - d)
             continue
         else 
             npt = sum(y[(i - d):(i + d)]) / n
@@ -33,11 +42,7 @@ function npt_running_average(x::AbstractVector{X}, y::AbstractVector{T};
         end
     end
     
-    df = DataFrame(x = x_final, y = y_final)
-    rename!(df,:x => x_name)
-    rename!(df,:y => y_name)
-    
-    return df
+    return (x_final, y_final)
 end
 
 """
