@@ -10,7 +10,7 @@ Calculates an `n`-point running average for vectors `x` (vector of any type) and
 
 Returns a tuple containing the running average values.
 
-```jldoctext
+```jldoctest
 julia> x = [1,2,3,4]
 julia> y = [5,6,7,8]
 julia>npt_running_average(x, y; n = 3)
